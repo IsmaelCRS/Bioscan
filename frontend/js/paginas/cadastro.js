@@ -1,7 +1,7 @@
 // Página de Cadastro (/cadastro) em 2 etapas conforme o mockup visual, persistindo no SQLite.
 import { api } from '../api.js';
 import {
-  CULTURAS, AREAS, campo, campoSenha, campoSelect,
+  AREAS, campo, campoSenha, campoSelect,
   ligarOlhos, valoresFormulario, botaoCarregando, mostrarErroForm,
 } from '../ui.js';
 
@@ -60,12 +60,6 @@ export async function render(el, ctx) {
               rotulo: 'Região / Município',
               nome: 'regiao',
               placeholder: 'Ex.: Uberlândia - MG',
-            })}
-            ${campoSelect({
-              rotulo: 'Cultura principal',
-              nome: 'cultura',
-              opcoes: CULTURAS,
-              placeholder: 'Selecione a cultura',
             })}
             ${campoSelect({
               rotulo: 'Tamanho da área',
@@ -137,7 +131,6 @@ export async function render(el, ctx) {
         perfilAgricola: {
           propriedade: d.propriedade,
           regiao: d.regiao,
-          cultura: d.cultura,
           area: d.area,
           telefone: '',
         },

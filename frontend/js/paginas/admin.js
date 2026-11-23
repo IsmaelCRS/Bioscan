@@ -4,7 +4,7 @@
 // 3. Catálogo de pragas: lista com sintomas, manejo e defensivos + criar, editar e remover
 import { api } from '../api.js';
 import {
-  CULTURAS, AREAS, esc, icone, corPraga, corAvatar, iniciais,
+  AREAS, esc, icone, corPraga, corAvatar, iniciais,
   formatarData, formatarPct, campo, campoSenha, campoSelect, campoTexto,
   ligarOlhos, valoresFormulario, botaoCarregando, mostrarErroForm,
   abrirModal, confirmar, toast, estadoCarregando,
@@ -55,7 +55,7 @@ export async function render(el, ctx) {
       if (!buscaUsuario.trim()) return true;
       const t = buscaUsuario.toLowerCase();
       const agro = u.perfilAgricola || {};
-      return `${u.nome} ${u.email} ${u.perfil} ${agro.propriedade || ''} ${agro.cultura || ''}`.toLowerCase().includes(t);
+      return `${u.nome} ${u.email} ${u.perfil} ${agro.propriedade || ''} ${agro.regiao || ''}`.toLowerCase().includes(t);
     });
     const totalPaginas = Math.max(1, Math.ceil(usuariosFiltrados.length / POR_PAGINA));
     if (paginaUsuarios > totalPaginas) paginaUsuarios = totalPaginas;
@@ -166,7 +166,7 @@ export async function render(el, ctx) {
               <tr>
                 <th>Usuário</th>
                 <th>Perfil</th>
-                <th>Propriedade / Cultura</th>
+                <th>Propriedade / Região</th>
                 <th>Cadastro</th>
                 <th>Status</th>
                 <th class="col-acoes">Ações</th>
@@ -177,7 +177,7 @@ export async function render(el, ctx) {
                 const agro = u.perfilAgricola || {};
                 const propTexto = u.perfil === 'ADMIN'
                   ? 'Administração do sistema'
-                  : [agro.propriedade, agro.cultura, agro.regiao].filter(Boolean).join(' · ') || '—';
+                  : [agro.propriedade, agro.regiao].filter(Boolean).join(' · ') || '—';
                 const ehProprio = u.id === ctx.conta.id;
                 return `
                   <tr>
@@ -416,7 +416,6 @@ function abrirModalUsuario(usuario, aoSalvar) {
             ${campo({ rotulo: 'Propriedade', nome: 'propriedade', valor: agro.propriedade || '' })}
             ${campo({ rotulo: 'Telefone', nome: 'telefone', valor: agro.telefone || '' })}
             ${campo({ rotulo: 'Região / Município', nome: 'regiao', valor: agro.regiao || '' })}
-            ${campoSelect({ rotulo: 'Cultura principal', nome: 'cultura', opcoes: CULTURAS, valor: agro.cultura || '' })}
             ${campoSelect({ rotulo: 'Tamanho da área', nome: 'area', opcoes: AREAS, valor: agro.area || '' })}
           </div>
         </div>
@@ -451,7 +450,6 @@ function abrirModalUsuario(usuario, aoSalvar) {
         propriedade: d.propriedade,
         telefone: d.telefone,
         regiao: d.regiao,
-        cultura: d.cultura,
         area: d.area,
       };
       if (editando) {

@@ -101,7 +101,11 @@ export function nomeClasse(det) {
 }
 
 export function tituloDiagnostico(d) {
-  return `Análise #${d.id}`;
+  try {
+    const mapa = JSON.parse(localStorage.getItem('bioscan:titulos-analises') || '{}');
+    if (mapa[d.id]) return mapa[d.id];
+  } catch {}
+  return d.tituloPersonalizado || `Análise #${d.id}`;
 }
 
 export function midiaDiagnostico(d, { lesoes = true } = {}) {

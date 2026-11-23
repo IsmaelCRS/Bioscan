@@ -3,7 +3,7 @@
 // - Coluna direita: formulário "Meus dados" + seção "Alterar senha" + botões "Salvar alterações" e "Sair da conta"
 import { api } from '../api.js';
 import {
-  CULTURAS, AREAS, esc, icone, campo, campoSenha, campoSelect,
+  AREAS, esc, icone, campo, campoSenha, campoSelect,
   formatarMesAno, ligarOlhos, valoresFormulario, botaoCarregando, toast,
 } from '../ui.js';
 
@@ -48,7 +48,6 @@ export async function render(el, ctx) {
               ${campo({ rotulo: 'Telefone', nome: 'telefone', valor: agro.telefone || '', placeholder: '(00) 00000-0000' })}
               ${campo({ rotulo: 'Propriedade', nome: 'propriedade', valor: agro.propriedade || '', placeholder: 'Nome da fazenda ou sítio' })}
               ${campo({ rotulo: 'Região / Município', nome: 'regiao', valor: agro.regiao || '', placeholder: 'Cidade - UF' })}
-              ${campoSelect({ rotulo: 'Cultura principal', nome: 'cultura', opcoes: CULTURAS, valor: agro.cultura || '' })}
               ${campoSelect({ rotulo: 'Tamanho da área', nome: 'area', opcoes: AREAS, valor: agro.area || '' })}
             ` : ''}
           </div>
@@ -97,7 +96,6 @@ export async function render(el, ctx) {
               telefone: d.telefone,
               propriedade: d.propriedade,
               regiao: d.regiao,
-              cultura: d.cultura,
               area: d.area,
             }
           : undefined,

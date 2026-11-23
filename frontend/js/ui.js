@@ -1,6 +1,5 @@
 // Utilitários de interface: escape de HTML, ícones, campos, modais e toasts.
-
-export const CULTURAS = ['Café', 'Soja', 'Milho', 'Feijão', 'Trigo', 'Algodão', 'Cana-de-açúcar', 'Citros', 'Hortaliças', 'Outra'];
+ 
 export const AREAS = ['Até 10 ha', '10 a 50 ha', '50 a 200 ha', '200 a 1000 ha', 'Acima de 1000 ha'];
 export const CORES_PRAGA = ['#1F3D12', '#8A9A78', '#5B8A3C', '#7A4A23', '#B08A2E', '#3E6B5A', '#A35D3D'];
 
