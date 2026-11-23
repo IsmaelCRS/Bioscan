@@ -1,0 +1,6 @@
+# Dependências do motor YOLO real (o restante do Bioscan usa apenas a biblioteca padrão).
+# Sem estes pacotes o servidor sobe automaticamente com o ModeloYoloMock (ou use --mock).
+# Dica (CPU, download menor): pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+ultralytics>=8.3
+pillow>=10.0
+
