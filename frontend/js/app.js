@@ -1,7 +1,7 @@
 // Roteador (hash) e casca da aplicação: cabeçalho, guarda de rotas e sessão.
 import { api } from './api.js';
 import { sessao } from './sessao.js';
-import { esc, icone, iniciais, corAvatar, toast, fecharTodosModais, estadoErro } from './ui.js';
+import { esc, icone, iniciais, corAvatar, toast, fecharTodosModais, estadoErro, confirmar } from './ui.js';
 import * as paginaLogin from './paginas/login.js';
 import * as paginaCadastro from './paginas/cadastro.js';
 import * as paginaInicio from './paginas/inicio.js';
@@ -64,6 +64,14 @@ function montarTopo(caminho) {
 }
 
 async function sair() {
+  const ok = await confirmar({
+    titulo: 'Sair da conta',
+    mensagem: 'Tem certeza de que deseja sair da sua conta?',
+    textoConfirmar: 'Confirmar Saída',
+    perigo: true,
+  });
+  if (!ok) return;
+
   try { await api.logout(); } catch { /* a sessão local é descartada de qualquer forma */ }
   sessao.limpar();
   contaAtual = null;

@@ -1,5 +1,6 @@
 // Página Inicial do Produtor (/inicio):
 // - Área drag-and-drop para envio de imagem + amostras rápidas (mock YOLO)
+// - Laudo com botões "Salvar no Histórico" ou "Descartar / Nova Análise"
 // - Card "Últimos diagnósticos" (2 últimos lado a lado)
 // - Card "Catálogo de pragas" (3 círculos clicáveis)
 import { api } from '../api.js';
@@ -122,8 +123,17 @@ export async function render(el, ctx) {
     dropzone.classList.add('analisando');
     try {
       const { diagnostico } = await api.criarDiagnostico(imagem, largura, altura);
-      toast('Análise concluída com sucesso!');
-      abrirModalResultado(diagnostico, () => render(el, ctx));
+      abrirModalDecisaoAnalise(
+        diagnostico,
+        () => {
+          input.value = '';
+          render(el, ctx);
+        },
+        () => {
+          input.value = '';
+          render(el, ctx);
+        }
+      );
     } catch (erro) {
       toast(erro.message, 'erro');
     } finally {
@@ -176,11 +186,56 @@ export async function render(el, ctx) {
   });
 }
 
-function abrirModalResultado(diagnostico, aoFechar) {
+function abrirModalDecisaoAnalise(diagnostico, aoSalvar, aoDescartar) {
+  let salvo = false;
+
+  const conteudo = `
+    <div class="laudo-decisao-wrap">
+      ${cartaoResultado(diagnostico)}
+      <div class="laudo-acoes-decisao">
+        <button type="button" class="btn btn-contorno btn-perigo" id="btn-descartar-analise">
+          ${icone('lixeira')} Descartar / Nova Análise
+        </button>
+        <button type="button" class="btn btn-primario" id="btn-salvar-analise">
+          ${icone('check')} Salvar no Histórico
+        </button>
+      </div>
+    </div>
+  `;
+
+  const modal = abrirModal({
+    titulo: `Resultado da Análise #${diagnostico.id}`,
+    tamanho: 'lg',
+    conteudo,
+    aoFechar: async () => {
+      if (salvo) {
+        aoSalvar?.();
+      } else {
+        try {
+          await api.excluirDiagnostico(diagnostico.id);
+        } catch {}
+        aoDescartar?.();
+      }
+    },
+  });
+
+  modal.corpo.querySelector('#btn-salvar-analise')?.addEventListener('click', () => {
+    salvo = true;
+    modal.fechar();
+    toast('Análise salva no histórico com sucesso!');
+  });
+
+  modal.corpo.querySelector('#btn-descartar-analise')?.addEventListener('click', () => {
+    salvo = false;
+    modal.fechar();
+    toast('Análise descartada.', 'info');
+  });
+}
+
+function abrirModalResultado(diagnostico) {
   abrirModal({
     titulo: `Resultado da Análise #${diagnostico.id}`,
     tamanho: 'lg',
     conteudo: cartaoResultado(diagnostico),
-    aoFechar,
   });
 }
