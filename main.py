@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-j = "ismael é foda"
-print(j)
-=======
 """Ponto de entrada do Bioscan.
 
 Monta as dependências (injeção manual) respeitando a arquitetura em camadas:
@@ -114,4 +110,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
->>>>>>> Stashed changes
